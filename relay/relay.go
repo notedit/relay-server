@@ -2,6 +2,7 @@ package relay
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"os/signal"
@@ -66,20 +67,19 @@ func NewRelayServer(configFile string) (*RelayServer, error) {
 		return nil, errors.Wrap(err, "init turn server error")
 	}
 
-	fmt.Println("Relay server started")
-	fmt.Println("Public IP:", config.Server.PublicIP)
-	fmt.Println("Realm:", config.Server.Realm)
-	fmt.Println("Password:", config.Server.Password)
-	fmt.Println("TCP Port:", config.Server.TCPPort)
-	fmt.Println("UDP Port:", config.Server.UDPPort)
+	log.Println("Relay server started")
+	log.Println("Public IP:", config.Server.PublicIP)
+	log.Println("Realm:", config.Server.Realm)
+	log.Println("Password:", config.Server.Password)
+	log.Println("TCP Port:", config.Server.TCPPort)
+	log.Println("UDP Port:", config.Server.UDPPort)
 
 	return server, nil
 }
 
 func (s *RelayServer) authHandler(username string, realm string, srcAddr net.Addr) ([]byte, bool) {
 
-	fmt.Println("authHandler: ", username, realm, srcAddr.String())
-
+	log.Println("authHandler: ", username, realm, srcAddr.String())
 	return turn.GenerateAuthKey(username, s.config.Server.Realm, s.config.Server.Password), true
 }
 
